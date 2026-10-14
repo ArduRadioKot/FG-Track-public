@@ -1,0 +1,48 @@
+/* FG-Track photographic screen showcase. Real app shots, never AI-redrawn. */
+.field-gallery{background:var(--bg); color:var(--text); border-top:1px solid var(--line)}
+.field-gallery .container-wide{position:relative}
+.field-gallery-head{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:44px;align-items:end;margin:52px 0 44px}
+.field-gallery-head h2{margin:0;font-size:clamp(47px,5.4vw,83px);font-weight:850;letter-spacing:-.073em;line-height:1.03}
+.field-gallery-head h2 .text-muted{color:var(--muted)}
+.field-gallery-side{margin-bottom:7px}
+.field-gallery-side p{margin:22px 0 0;color:var(--muted);font-size:13px;line-height:1.8;letter-spacing:-.015em}
+.field-live{display:inline-flex;align-items:center;gap:10px;font-size:10px;letter-spacing:.12em;color:var(--text);font-weight:700}
+.field-live i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+.field-photo{margin:0;position:relative;overflow:hidden;background:#071015;border:1px solid var(--line);border-radius:var(--radius);isolation:isolate}
+.field-photo img{display:block;width:100%;height:auto}
+.field-photo-main img{aspect-ratio:1800/1020;object-fit:cover}
+.field-photo-main::after{content:"";position:absolute;pointer-events:none;z-index:1;inset:50% 0 0;background:linear-gradient(0deg,rgba(3,8,13,.78),transparent 80%)}
+.field-photo-main figcaption{position:absolute;z-index:2;bottom:34px;right:41px;text-align:right;color:#eff9fa;display:flex;flex-direction:column;align-items:flex-end}
+.field-photo figcaption>span{font-size:10px;letter-spacing:.15em;color:#a3c3c8;font-weight:750}
+.field-photo figcaption strong{font-size:clamp(21px,2.4vw,40px);letter-spacing:-.05em;line-height:1.1;margin:12px 0 18px}
+.field-photo-main figcaption button{background:#21aabe;color:#07181a;border:1px solid rgba(190,255,255,.18);border-radius:999px;display:flex;gap:32px;align-items:center;justify-content:space-between;font-size:12px;font-weight:750;padding:15px 17px 15px 21px;transition:transform .25s,background .25s;cursor:pointer}
+.field-photo-main figcaption button:hover{background:#62c7d4;}
+.field-gallery-grid{display:grid;grid-template-columns:1.22fr 1fr;gap:18px;margin-top:18px;align-items:stretch}
+.field-gallery-grid > *{min-width:0}
+.field-photo-detail{display:flex;flex-direction:column;justify-content:space-between}
+.field-photo-detail img{height:100%;min-height:390px;object-fit:cover}
+.field-photo-detail:after{content:"";position:absolute;inset:52% 0 0;z-index:1;background:linear-gradient(0deg,rgba(3,8,13,.78),transparent);pointer-events:none}
+.field-photo-detail figcaption{position:absolute;z-index:2;bottom:29px;left:31px;color:white}
+.field-photo-detail figcaption strong{display:block;margin:10px 0 0;font-size:clamp(19px,2vw,30px)}
+.field-gallery-interface{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 32px 28px;display:flex;flex-direction:column;min-height:405px}
+.field-interface-top{display:flex;justify-content:space-between;color:var(--muted);font-weight:700;font-size:10px;letter-spacing:.13em}
+.field-interface-top .small-cross{font-size:19px;color:var(--accent)}
+.field-gallery-interface h3{font-size:clamp(29px,3vw,46px);line-height:1.04;margin:21px 0 0;letter-spacing:-.065em}
+.field-gallery-interface h3 em{font-style:normal;color:var(--accent)}
+.field-gallery-interface p{margin:14px 0 27px;color:var(--muted);font-size:12px;line-height:1.7;max-width:410px}
+.field-screen-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:auto}
+.field-screen-button{padding:10px 9px;background:var(--surface-2);border:1px solid var(--line);border-radius:13px;color:var(--text);display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:transform .25s,border-color .25s,background .25s;min-width:0}
+
+.field-screen-button:focus-visible,.field-photo-main button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.field-screen-button img{display:block;height:135px;width:auto;max-width:100%;object-fit:contain;border-radius:8px}
+.field-screen-button>span{width:100%;display:flex;gap:6px;align-items:center;justify-content:space-between;color:var(--muted);font-size:9px;white-space:nowrap}
+.field-screen-button strong{font-weight:750;color:var(--text);font-size:10px}
+/* An authentic screenshot floats over the second existing rider photo. */
+.rider-section{isolation:isolate}
+.rider-app-overlay{position:absolute;z-index:3;right:9%;top:13%;width:clamp(145px,14vw,225px);transform:rotate(8deg);filter:drop-shadow(-10px 30px 25px rgba(0,0,0,.48));pointer-events:none}
+.rider-app-overlay img{display:block;width:100%;height:auto;border-radius:19px}
+.rider-app-overlay span{position:absolute;right:0;bottom:-20px;color:white;font-size:10px;letter-spacing:.13em;white-space:nowrap;text-shadow:0 1px 8px #000}
+@media(max-width:1000px){.field-gallery-head{grid-template-columns:minmax(0,1fr) 230px;gap:20px}.field-gallery-grid{grid-template-columns:1fr}.field-photo-detail img{max-height:470px}.field-gallery-interface{min-height:unset}.field-screen-list{max-width:580px}.field-screen-button img{height:180px}.rider-app-overlay{right:4%;top:21%;width:175px}}
+@media(max-width:740px){.field-gallery-head{display:block;margin:35px 0 28px}.field-gallery-head h2{font-size:clamp(42px,9vw,67px)}.field-gallery-side{margin-top:22px}.field-gallery-side p{margin-top:12px;max-width:430px}.field-photo-main img{aspect-ratio:1000/1250;object-fit:cover;object-position:center;}.field-photo-main figcaption{position:relative;z-index:3;inset:auto;background:#081217;padding:19px;align-items:flex-start;text-align:left}.field-photo-main figcaption strong{font-size:26px}.field-photo-main figcaption button{padding:12px 15px;font-size:11px}.field-photo-detail img{height:auto;min-height:unset;aspect-ratio:4/3;object-fit:cover}.field-gallery-grid{gap:12px;margin-top:12px}.field-gallery-interface{padding:23px 20px 22px}.field-gallery-interface h3{font-size:38px}.field-screen-button img{height:140px}.rider-app-overlay{right:5%;top:25%;width:118px;opacity:.88}.rider-app-overlay span{display:none}}
+@media(max-width:410px){.field-photo-main img{aspect-ratio:1000/1250;object-position:center}.field-gallery-interface h3{font-size:32px}.field-screen-list{gap:6px}.field-screen-button{padding:7px 3px}.field-screen-button img{height:120px}.field-screen-button>span{font-size:8px;gap:3px}.field-screen-button strong{font-size:9px}.rider-app-overlay{width:91px;right:4%}}
+@media(prefers-reduced-motion:reduce){.field-screen-button,.field-photo-main figcaption button{transition:none}.rider-app-overlay{transform:none}}

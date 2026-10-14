@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090c0a">
+  <meta name="description" content="FG-Track - трекер для сноуборда. Датчик на доске, мобильное приложение приложение и аналитика ваших трюков">
+  <meta property="og:title" content="FG-Track - Every move matters">
+  <meta property="og:description" content="FG-Track - трекер для сноуборда. Датчик на доске, мобильное приложение приложение и аналитика ваших трюков">
+  <meta property="og:type" content="website">
+  <title>FG-Track - Каждый прыжок в деталях.</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="design-kit.css">
+  <link rel="stylesheet" href="screens-in-photo.css">
+  <link rel="stylesheet" href="screens-v3.css">
+  <link rel="stylesheet" href="revisions.css">
+  <script src="script.js" defer></script>
+</head>
+<body data-theme="dark">
+  <svg class="ui-icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <symbol id="icon-arrow-up-right" viewBox="0 0 24 24"><path d="M5 19 18 6M8 6h10v10"/></symbol>
+    <symbol id="icon-arrow-down" viewBox="0 0 24 24"><path d="M12 3v17m-6-6 6 6 6-6"/></symbol>
+    <symbol id="icon-arrow-up" viewBox="0 0 24 24"><path d="M12 21V4m-6 6 6-6 6 6"/></symbol>
+    <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol>
+  </svg>
+  <a class="skip-link" href="#main">Перейти к содержимому</a>
+  <div class="page-noise" aria-hidden="true"></div>
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner container-wide">
+      <a class="brand" href="#top" aria-label="FG-Track - на главную"><img class="fg-brand-icon" src="assets/official-app-icon.png" alt="" width="44" height="44"><span class="brand-text">FG<span class="fg-brand-separator">-</span>TRACK</span></a>
+      <div class="header-end">
+        <nav class="site-nav" id="siteNav" aria-label="Основная навигация">
+          <a href="#device">Устройство</a>
+          <a href="#features">Возможности</a>
+          <a href="#app">Приложение</a>
+          <a href="#how">Как работает</a>
+          <a href="#technology">Технологии</a>
+<!--          <button class="header-search" type="button" data-header-search aria-label="Поиск по странице"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.3-4.3m2.3-5.2A7.5 7.5 0 1 1 4 11.5a7.5 7.5 0 0 1 15 0Z"/></svg><span>Поиск</span><kbd aria-hidden="true">K</kbd></button>-->
+        </nav>
+        <div class="header-actions">
+          <button class="header-search-mobile" type="button" data-header-search aria-label="Поиск по странице"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.3-4.3m2.3-5.2A7.5 7.5 0 1 1 4 11.5a7.5 7.5 0 0 1 15 0Z"/></svg></button>
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Включить светлую тему" aria-pressed="false" title="Сменить тему"><svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg><svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.8A8.5 8.5 0 0 1 8.2 4 8.5 8.5 0 1 0 20 15.8Z"/></svg></button>
+          <button class="menu-toggle" type="button" id="menuToggle" aria-label="Открыть меню" aria-controls="mobileMenu" aria-expanded="false"><span></span><span></span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <nav class="fg-mobile-menu" id="mobileMenu" aria-label="Мобильная навигация" aria-hidden="true" inert>
+          <a href="#device">Устройство</a>
+          <a href="#features">Возможности</a>
+          <a href="#app">Приложение</a>
+          <a href="#how">Как работает</a>
+          <a href="#technology">Технологии</a>
+    <a class="mobile-menu-contact" href="mailto:frogeesoft.team@gmail.com">Связаться <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></a>
+  </nav>
+  <dialog class="header-search-dialog" id="headerSearchDialog" aria-label="Поиск по странице">
+    <div class="header-search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.3-4.3m2.3-5.2A7.5 7.5 0 1 1 4 11.5a7.5 7.5 0 0 1 15 0Z"/></svg>
+      <label class="visually-hidden" for="headerSearchInput">Что найти</label>
+      <input id="headerSearchInput" type="search" placeholder="Поиск по FG-Track" autocomplete="off">
+      <button type="button" id="headerSearchClose" aria-label="Закрыть поиск">Esc</button>
+    </div>
+    <div class="header-search-results" id="headerSearchResults" aria-live="polite"></div>
+  </dialog>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="heroTitle">
+      <div class="hero-glow" aria-hidden="true"></div><div class="hero-rings" aria-hidden="true"></div>
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-photo" id="heroPhoto" aria-hidden="true">
+        <img class="hero-photo-local" src="assets/snowboarder-local.webp" alt="">
+        <img class="hero-photo-online" src="https://images.unsplash.com/photo-1739741432363-8f5fa6ef4e7d?auto=format&amp;fit=crop&amp;w=1350&amp;q=85" alt="" onerror="this.style.display='none'">
+        <div class="photo-shade"></div>
+      </div>
+      <div class="hero-content container-wide">
+        <div class="hero-meta reveal">СДЕЛАНО РАЙДЕРАМИ, ДЛЯ РАЙДЕРОВ</div>
+        <h1 id="heroTitle" class="hero-title reveal">КАЖДЫЙ<br>ПРЫЖОК.<br><span>В ДЕТАЛЯХ.</span></h1>
+        <div class="hero-lower reveal">
+          <div class="hero-intro">
+            <p>Узнай, <strong>как ты катаешься.</strong></p>
+            <span>Компактный трекер для сноуборда, который фиксирует движение доски и помогает анализировать прыжки, вращения и результаты тренировок. Закрепи датчик на сноуборде, подключи его к смартфону и получай данные о своём катании.</span>
+            <div class="hero-actions">
+              <a class="button button-light" href="#contact">Узнать о запуске <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></a>
+              <a class="button button-ghost" href="#device">Узнать больше <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-down"></use></svg></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="device-section section-pad" id="device" aria-labelledby="deviceTitle">
+      <div class="container-wide device-layout">
+        <div class="device-copy reveal">
+          <h2 id="deviceTitle">Создан для<br><em>твоего сноуборда.</em></h2>
+          <p class="device-lead">Небольшой датчик. Больше информации о каждом заезде.</p>
+          <p>FG-Track устанавливается на доску и измеряет её ускорения и вращения. Данные передаются на смартфон по Bluetooth, чтобы вы могли изучить движение после тренировки.</p>
+        </div>
+        <figure class="device-visual reveal">
+          <div class="device-photo-wrap"><img src="assets/prototype-photo-original.jpeg" loading="lazy" width="1210" height="1613" alt="Текущий прототип датчика FG-Track на базе M5StickC Plus2"></div>
+<!--          <figcaption><span>ПРОТОТИП / В РАЗРАБОТКЕ</span><span>Фотография действующего устройства, не финальный корпус</span></figcaption>-->
+        </figure>
+      </div>
+    </section>
+
+    <section class="section concept section-pad container-wide" id="concept" aria-labelledby="conceptTitle">
+  
+      <div class="concept-heading reveal"><h2 id="conceptTitle">Скорость - это<br><span class="text-muted">только начало.</span></h2><p>Обычный трекер знает, где вы были. FG-Track помогает понять, <em>что произошло</em> между отрывом и приземлением.</p></div>
+      <div class="concept-rule"></div>
+      <div class="pain-grid">
+        <article class="pain-card reveal"><div class="pain-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><rect x="13" y="12" width="22" height="24" rx="7"/><path d="M19 12V5h10v7m-10 24v7h10v-7"/></svg></div><h3>Измерения не по руке</h3><p>Часы измеряют движение руки, а не сноуборда. Настоящее вращение доски остаётся за кадром.</p></article>
+        <article class="pain-card reveal"><div class="pain-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M7 38V27m9 11V18m9 20V9m9 29V22m8 16V15"/><path d="M7 38h35"/></svg></div><h3>Меньше догадок.</h3><p>Время полёта, угол поворота и характер приземления - вместо ощущений и приблизительных оценок.</p></article>
+      </div>
+    </section>
+
+    <section class="statement" aria-label="Суть проекта">
+      <div class="statement-back" aria-hidden="true">FG-TRACK / FG-TRACK / FG-TRACK</div>
+      <div class="container-wide statement-content reveal">
+       
+        <h2>Не просто<br><em>записывать.</em><br>Понимать.</h2>
+        <span class="statement-aside">Датчик на сноуборде измеряет движение доски во время тренировки. Приложение собирает данные в сессии, чтобы после заезда можно было изучить доступные показатели.</span>
+      </div>
+    </section>
+
+    <section class="section section-pad features" id="features" aria-labelledby="featuresTitle">
+      <div class="container-wide">
+    
+        <div class="section-heading flex-heading reveal"><h2 id="featuresTitle">Твой прогресс.<br><span class="text-muted">Без предположений.</span></h2><p>Ключевые параметры каждого заезда, от первого поворота до последнего приземления.</p></div>
+        <div class="feature-layout">
+          <article class="feature-large feature-card reveal">
+
+            <div class="feature-schematic" aria-hidden="true"><div class="schematic-orbit orbit-one"></div><div class="schematic-orbit orbit-two"></div><div class="schematic-trail"><svg viewBox="0 0 700 300" preserveAspectRatio="none"><path class="route-shadow" d="M5 245 C95 245 82 100 170 134 S300 250 366 154 S450 50 526 98 S620 200 695 58"/><path class="route-line" d="M5 245 C95 245 82 100 170 134 S300 250 366 154 S450 50 526 98 S620 200 695 58"/></svg><span class="route-pin pin-one"></span><span class="route-pin pin-two"></span><span class="route-pin pin-three"></span></div></div>
+            <div class="feature-large-bottom"><div><h3>Каждый метр<br>имеет значение.</h3><p>В приложении есть запись маршрута, скорости, дистанции и длительности тренировки через GPS смартфона.</p></div></div>
+          </article>
+          <div class="feature-right">
+            <article class="feature-card feature-rotation reveal"><div class="rotation-art" aria-hidden="true"><div class="rotating-ring"><span>360°</span></div><div class="rotation-arrow"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></div></div><div class="feature-bottom"><h3>Вращения<br>в градусах.</h3><p>Распознавание вращений до 720° с учётом направления frontside и backside.</p></div></article>
+            <article class="feature-card feature-airtime reveal"><div class="airtime-visual" aria-hidden="true"><strong>0<span>.</span>82</strong><span>SEC / AIRTIME</span></div><div class="feature-bottom"><h3>Отрыв - Полёт - Посадка.</h3><p>Анализ времени полёта и параметров приземления.</p></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-section section-pad" id="how" aria-labelledby="howTitle">
+      <div class="container-wide">
+        <div class="how-heading reveal"><h2 id="howTitle">Четыре шага <em>до нового взгляда на катание.</em></h2></div>
+        <div class="how-grid">
+          <article class="how-step reveal"><span>01</span><h3>Установи трекер</h3><p>Закрепи устройство на сноуборде в соответствии с инструкцией.</p></article>
+          <article class="how-step reveal"><span>02</span><h3>Подключи смартфон</h3><p>Соедини прототип с приложением через Bluetooth Low Energy.</p></article>
+          <article class="how-step reveal"><span>03</span><h3>Начни тренировку</h3><p>Датчик собирает данные о движении доски во время заезда.</p></article>
+          <article class="how-step reveal"><span>04</span><h3>Изучи результаты</h3><p>Открой сохранённую сессию и посмотри доступные показатели.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-section" id="app" aria-labelledby="appTitle">
+      <div class="container-wide product-container">
+        <div class="product-heading reveal"><h2 id="appTitle">Твои данные.<br><span class="text-muted">Всегда под рукой.</span></h2><p>FG-Track работает в паре с мобильным приложением. Подключай устройство, записывай тренировки и изучай доступную статистику после заезда.</p></div>
+        <div class="phone-stage phone-stage-v3" aria-label="Четыре демонстрационных экрана приложения FG-Track">
+          <div class="phone-aura" aria-hidden="true"></div>
+          <figure class="showcase-device device-session reveal"><div class="real-mockup"><img src="assets/mockup-session.png" alt="Сессия FG-Track: 13 минут 47 секунд, карта маршрута и таймлайн"></div><figcaption>СЕССИЯ</figcaption><a class="phone-screen-open" href="assets/mockup-session.png" target="_blank" rel="noopener" aria-label="Открыть сессию с маршрутом в новой вкладке"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></a></figure>
+          <figure class="showcase-device device-home reveal"><div class="real-mockup"><img src="assets/mockup-home.png" alt="Главный экран FG-Track: устройство, сводка, список трюков и кнопка тренировки"></div><figcaption>ГЛАВНАЯ</figcaption><a class="phone-screen-open" href="assets/mockup-home.png" target="_blank" rel="noopener" aria-label="Открыть главный экран в новой вкладке"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></a></figure>
+          <figure class="showcase-device device-replay reveal"><div class="real-mockup"><img src="assets/mockup-replay.png" alt="Повтор трюка BS 180: визуализация доски, углы и анимация прыжка"></div><figcaption>ПОВТОР</figcaption><a class="phone-screen-open" href="assets/mockup-replay.png" target="_blank" rel="noopener" aria-label="Открыть повтор трюка в новой вкладке"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></a></figure>
+          <figure class="showcase-device device-calibration reveal"><div class="real-mockup"><img src="assets/mockup-calibration.png" alt="Калибровка FG-Track: стойка Regular или Goofy и положение датчика"></div><figcaption>КАЛИБРОВКА</figcaption><a class="phone-screen-open" href="assets/mockup-calibration.png" target="_blank" rel="noopener" aria-label="Открыть экран калибровки в новой вкладке"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></a></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="field-gallery section-pad field-gallery-v3" id="showcase" aria-labelledby="fieldGalleryTitle">
+      <div class="container-wide">
+        <div class="field-gallery-head reveal">
+          <h2 id="fieldGalleryTitle">Из движения -<br><span class="text-muted">в историю заезда.</span></h2>
+        </div>
+        <div class="editorial-feature reveal">
+          <div class="editorial-visual">
+            <div class="editorial-photo" aria-hidden="true"><img src="assets/swnowboard-action.png" alt=""></div>
+            <div class="editorial-device" aria-hidden="true"><div class="real-mockup"><img src="assets/mockup-replay.png" alt=""></div></div>
+          </div>
+          <div class="editorial-caption">
+            <div class="editorial-left"><h3>От трюка<br>до каждого<br><em>градуса.</em></h3></div>
+            <div class="editorial-aside"><p>Смотри движения доски, а не только линии на карте.</p></div>
+          </div>
+        </div>
+        <div class="editorial-grid">
+          <article class="editorial-session reveal">
+            <div class="session-top"></div>
+            <h3>После заезда<br>остаётся <em>картина.</em></h3>
+            <p>Маршрут, скорость, прыжки и события собраны в одну сессию.</p>
+            <div class="session-phone" aria-hidden="true"><div class="real-mockup"><img src="assets/mockup-session.png" alt=""></div></div>
+
+           
+          </article>
+          <article class="editorial-calibration reveal">
+            <div class="session-top"></div>
+            <h3>Готов к старту.<br><em>С первой настройки.</em></h3>
+            <p>Выбери стойку и положение сенсора. FG-Track учитывает ориентацию датчика при измерениях.</p>
+            <div class="calibration-device" aria-hidden="true"><div class="real-mockup"><img src="assets/mockup-calibration.png" alt=""></div></div>
+
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="rider-section" aria-labelledby="riderTitle">
+      <div class="rider-photo"><img src="https://skitours.com.ua/sites/default/files/images/articles/661.jpg" loading="lazy" alt="Сноубординг на снежном склоне"></div>
+      <div class="rider-shade" aria-hidden="true"></div>
+      <div class="container-wide rider-content">
+        <div class="rider-main">
+          <div class="rider-copy">
+            <h2 id="riderTitle" class="reveal">МЕНЬШЕ<br>ДОГАДОК.<br><em>БОЛЬШЕ<br>ПРОГРЕССА.</em></h2>
+            <div class="rider-base reveal"><p>Неважно, тренируешь первые 180° или работаешь над новым трюком. Важно понимать, что происходит на самом деле.</p></div>
+          </div>
+          <div class="rider-app-overlay rider-app-overlay-v3 rider-phone-large reveal" aria-label="Скриншот сессии FG-Track"><div class="real-mockup"><img src="assets/mockup-session.png" alt="Экран FG-Track с маршрутом, скоростью и временем заезда" loading="lazy"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-pad technology" id="technology" aria-labelledby="techTitle">
+      <div class="container-wide"><div class="flex-heading section-heading reveal"><h2 id="techTitle">Сложное - внутри.<br><span class="text-muted">Простое - снаружи.</span></h2><p>Три звена одной системы. Никакого дополнительного оборудования на трассе.</p></div>
+        <div class="steps">
+          <div class="step reveal"><div class="sensor-drawing"><img class="sensor-prototype-photo" src="assets/tracker-from-presentation.webp" loading="lazy" alt="Крупный план экрана прототипа FG-Track на базе M5StickC Plus2"></div><h3>Датчик на доске</h3><p>IMU фиксирует ускорения и вращения доски. Текущий прототип построен на M5StickC Plus2.</p></div>
+          <div class="step reveal"><div class="ble-drawing" aria-hidden="true">
+              <span class="ble-wave wave-a"></span><span class="ble-wave wave-b"></span>
+              <span class="ble-icon-wrap">
+                <svg class="ble-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M7 7L17 17L12 22V2L17 7L7 17" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="ble-signal ble-signal-left"></span><span class="ble-signal ble-signal-right"></span>
+            </div><h3>Bluetooth Low Energy</h3><p>Телеметрия передаётся на смартфон по BLE. Интеграция GPS телефона для записи маршрута планируется.</p></div>
+          <div class="step reveal"><div class="insight-drawing" aria-hidden="true"><span>FS 360°</span><div class="insight-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><h3>Аналитика на телефоне</h3><p>Приложение сохраняет сессии. Автоматическое определение прыжков и трюков ещё разрабатывается.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq-section section-pad" id="faq" aria-labelledby="faqTitle"><div class="container-wide faq-layout"><div class="faq-intro reveal"><h2 id="faqTitle">Есть<br>вопросы<span>?</span></h2><p>Коротко о том, как работает FG-Track.</p></div><div class="faq-items">
+<!--      <details class="faq-item reveal" name="fg-track-faq"><summary>Нужна ли камера на трассе?<span class="faq-plus" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg></span></summary><p>Нет. Датчик устанавливается на сноуборд, считывает ускорения и вращения, а затем отправляет измерения в приложение по BLE.</p></details>-->
+<!--      <details class="faq-item reveal" name="fg-track-faq"><summary>Можно ли попробовать без датчика?<span class="faq-plus" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg></span></summary><p>Да. В текущем проекте предусмотрен виртуальный сноуборд: он генерирует тестовую IMU-телеметрию для знакомства с приложением и проверки экранов.</p></details>-->
+      <details class="faq-item reveal" name="fg-track-faq"><summary>Как FG-Track крепится на сноуборд?<span class="faq-plus" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg></span></summary><p>Способ крепления для финальной версии ещё уточняется. Перед запуском мы покажем установку и результаты испытаний фиксации на доске.</p></details>
+      <details class="faq-item reveal" name="fg-track-faq"><summary>Сколько устройство работает без зарядки?<span class="faq-plus" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg></span></summary><p>Подтверждённой автономности для финальной версии пока нет. Опубликуем её после испытаний прототипа.</p></details>
+<!--      <details class="faq-item reveal" name="fg-track-faq"><summary>Как распознаются прыжки и трюки?<span class="faq-plus" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg></span></summary><p>Алгоритмы распознавания находятся в разработке. Точность измерений предстоит проверить на склоне.</p></details>-->
+      <details class="faq-item reveal" name="fg-track-faq"><summary>Где скачать FG-Track?<span class="faq-plus" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg></span></summary><p>FG-Track - проект в разработке. Публикация в App Store и Google Play пока только запланирована. В скором времени выложим релиз приложения на гитхаб и в магазины приложений.</p></details>
+    </div></div></section>
+
+    <section class="cta-section" id="contact"><div class="cta-orb" aria-hidden="true"></div><img class="cta-mascot" src="assets/official-fg-track-logo.webp" alt="" aria-hidden="true" loading="lazy"><div class="container-wide cta-content"><div class="cta-meta"><span>СЕЙЧАС В РАЗРАБОТКЕ</span></div><div class="cta-core reveal"><h2>КАЖДЫЙ ЗАЕЗД<br><em>МОЖЕТ</em><br>РАССКАЗАТЬ<br>БОЛЬШЕ.</h2><p>FG-Track создаётся для тех, кто хочет лучше понимать своё катание. Устройство находится на стадии разработки. Напиши команде, чтобы узнать о ходе разработки и будущем запуске.</p><a class="cta-link" href="mailto:frogeesoft.team@gmail.com">Узнать о старте продаж <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></a></div><div class="cta-bottom"><a href="#top">НАВЕРХ <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up"></use></svg></a></div></div></section>
+  </main>
+  <footer class="footer"><div class="container-wide footer-inner"><div><a class="brand footer-brand" href="#top"><img class="fg-brand-icon" src="assets/official-app-icon.png" alt="" width="44" height="44"><span class="brand-text">FG<span class="fg-brand-separator">-</span>TRACK<span class="brand-dot">.</span></span></a><p>Движение - в данных.<br>Прогресс - в деталях.</p></div><div class="footer-column"><span>НАВИГАЦИЯ</span><a href="#concept">О проекте</a><a href="#features">Возможности</a><a href="#app">Приложение</a><a href="#showcase">Экраны</a><a href="#faq">FAQ</a></div><div class="footer-column"><span>КОНТАКТЫ</span><a href="mailto:frogeesoft.team@gmail.com">Email <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></a><a href="https://github.com/ArduRadioKot" target="_blank" rel="noreferrer">GitHub <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></a><a href="https://alex-fgdev.ru" target="_blank" rel="noreferrer">Portfolio <svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-arrow-up-right"></use></svg></a></div><div class="footer-made footer-made-v3"><span class="footer-project-logo"><img src="assets/official-fg-track-logo.webp" alt="Зимний маскот FG-Track" loading="lazy"><strong>FG-Track</strong></span><a class="frogee-brand" href="https://github.com/ArduRadioKot/Alex-fgCV" target="_blank" rel="noreferrer" aria-label="FrogeeSoft - официальный логотип и дизайн-кит"><img class="frogee-logo-dark" src="assets/frogeesoft-logo-dark.png" alt="FrogeeSoft" loading="lazy"><img class="frogee-logo-light" src="assets/frogeesoft-logo-light.png" alt="FrogeeSoft" loading="lazy"><span class="frogee-fallback" aria-label="FrogeeSoft">FrogeeSoft<span class="frogee-fallback-dot">.</span></span></a><small>PART OF FROGEESOFT / S.I.T</small></div></div><div class="container-wide footer-legal"><span>© 2026 FG-TRACK / S.I.T TEAM</span><span>ФОТО РАЙДЕРА: UNSPLASH И ГЕНЕРАТИВНЫЙ ВИЗУАЛ. ФОТО ТРЕКЕРА: ПРЕЗЕНТАЦИЯ FG-TRACK.</span></div></footer>
+</body>
+</html>

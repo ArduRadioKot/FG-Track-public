@@ -1,0 +1,314 @@
+/*
+ * FG-Track × Alex-fgCV — visual system bridge.
+ * Source of the design vocabulary: https://github.com/ArduRadioKot/Alex-fgCV
+ * Reusable decisions are centralized here rather than copying 4,000+ lines
+ * of portfolio-specific styles. Original FG-Track motion/layout stays in styles.css.
+ */
+:root {
+  --bg: #090c0a;
+  --bg-soft: #0d120f;
+  --surface: #111713;
+  --surface-2: #161d18;
+  --text: #f1f5ef;
+  --muted: #98a398;
+  --line: rgba(240,255,238,.13);
+  --line-strong: rgba(240,255,238,.28);
+  --accent: #21aabe;
+  --accent-2: #21aabe;
+  --accent-soft: #62c7d4;
+  --accent-bright: #62c7d4;
+  --on-accent: #061316;
+  --radius: 18px;
+  --shadow: 0 30px 80px rgba(0,0,0,.35);
+  --header-h: 74px;
+  --max: 1240px;
+}
+body[data-theme="light"] {
+  --bg: #eef2e9;
+  --bg-soft: #e4eade;
+  --surface: #f8faf4;
+  --surface-2: #e8eee2;
+  --text: #121713;
+  --muted: #5e695f;
+  --line: rgba(18,23,19,.13);
+  --line-strong: rgba(18,23,19,.26);
+  --accent: #147889;
+  --accent-2: #147889;
+  --accent-soft: #147889;
+  --accent-bright: #62c7d4;
+  --on-accent: #ffffff;
+  --shadow: 0 30px 80px rgba(45,55,44,.13);
+}
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  font-size:16px;
+  transition:background .35s ease,color .35s ease;
+}
+body.menu-open{overflow:hidden}
+body,button,a,input,textarea{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+h1,h2,h3{font-family:inherit;letter-spacing:-.065em}
+h2{font-weight:850}
+button{cursor:pointer}
+::selection{background:var(--accent);color:var(--on-accent)}
+.page-noise {
+  position:fixed;inset:0;pointer-events:none;z-index:1000;
+  opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+/* Alex-fgCV: floating translucent navigation, badge, rounded controls. */
+.site-header {
+  position:fixed;
+  inset:12px auto auto 50%;
+  transform:translateX(-50%);
+  width:min(calc(100% - 40px),1280px);
+  height:var(--header-h);
+  background:rgba(9,12,10,.60);
+  border:1px solid rgba(240,255,238,.12);
+  border-radius:18px;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow:0 16px 50px rgba(0,0,0,.10);
+  transition:top .3s,border-color .3s,background .3s,box-shadow .3s;
+}
+.site-header.is-scrolled{
+  top:8px;
+  background:rgba(9,12,10,.91);
+  border:1px solid rgba(240,255,238,.16);
+  border-radius:18px;
+  box-shadow:0 16px 55px rgba(0,0,0,.28);
+}
+.header-inner{width:calc(100% - 36px);max-width:none;gap:22px}
+.brand{display:inline-flex;align-items:center;gap:11px;font-size:18px;font-weight:850;letter-spacing:-.055em}
+.brand-mark {
+  display:grid;place-items:center;
+  width:39px;height:39px;flex:none;
+  border-radius:11px;
+  background:#21aabe;
+  color:#061316;
+  font-size:15px;font-weight:950;letter-spacing:-.09em;
+}
+.brand-text{font-size:19px}
+.brand-dot{color:var(--accent)}
+.site-nav{gap:26px}
+.site-nav a{font-size:13px;font-weight:650;color:#b7c5c3}
+.site-nav a:hover{color:#fff}
+.site-nav a{position:relative}
+.site-nav a::after{content:"";position:absolute;left:0;right:100%;bottom:-7px;height:1px;background:var(--accent);transition:right .25s}
+.site-nav a:hover::after{right:0}
+.header-actions{display:flex;align-items:center;gap:9px}
+.header-project-tag{display:flex;align-items:center;gap:9px;margin-right:6px;font-size:10px;letter-spacing:.05em;color:#c1cbca;font-weight:750;white-space:nowrap}
+.status-dot{display:inline-block;width:8px;height:8px;flex:none;background:#21aabe;border-radius:50%;box-shadow:0 0 0 5px rgba(33,170,190,.15);animation:statusPulse 2s ease-in-out infinite}
+@keyframes statusPulse{50%{box-shadow:0 0 0 9px rgba(33,170,190,0)}}
+.theme-toggle{
+  width:42px;height:42px;flex:none;display:grid;place-items:center;
+  border:1px solid rgba(240,255,238,.20);border-radius:50%;
+  background:rgba(17,23,19,.70);color:#f1f5ef;
+  transition:transform .2s,background .2s,border-color .2s;
+}
+.theme-toggle:hover{background:#192b29;border-color:rgba(240,255,238,.38)}
+.theme-toggle svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.theme-toggle .moon{display:none}
+body[data-theme="light"] .theme-toggle .sun{display:none}
+body[data-theme="light"] .theme-toggle .moon{display:block}
+.header-contact{
+  border:1px solid #21aabe;
+  border-radius:10px;
+  background:#21aabe;
+  color:#061316;
+  min-height:42px;padding:0 16px;
+  font-size:12px;font-weight:800;gap:20px;
+}
+.header-contact:hover{background:#62c7d4;color:#061316}
+.menu-toggle{border-radius:50%;border:1px solid rgba(240,255,238,.21);background:rgba(17,23,19,.65)}
+/* Hero keeps its striking dark photo in both themes, but adopts the kit typography. */
+.hero{background:#090c0a;color:#f1f5ef}
+.hero::after{background:linear-gradient(90deg,rgba(9,12,10,.95) 0%,rgba(9,12,10,.84) 31%,rgba(9,12,10,.06) 89%),linear-gradient(0deg,#090c0a,transparent 28%)}
+.hero-content{padding-top:178px}
+.hero-rings {
+  position:absolute;right:-16%;top:-50%;width:75vw;height:75vw;
+  border-radius:50%;border:1px solid rgba(240,255,238,.09);
+  box-shadow:0 0 0 90px rgba(240,255,238,.025),0 0 0 180px rgba(240,255,238,.018);
+  z-index:0;pointer-events:none;
+}
+.hero-meta{font-family:inherit;font-weight:750;letter-spacing:.10em;color:#cdd7d5}
+.hero-title {
+  margin-top:45px;
+  font-weight:900;
+  font-size:clamp(70px,7.1vw,116px);
+  letter-spacing:-.085em;
+  line-height:.94;
+  max-width:1100px;
+}
+.hero-title span{color:#62c7d4}
+.hero-intro>p{font-weight:600;letter-spacing:-.05em}
+.hero-intro>p strong{font-weight:800;color:#62c7d4}
+.hero-intro>span{color:#c2ccc7}
+.button {
+  height:54px;border-radius:10px;padding:0 21px;
+  font-size:12px;font-weight:800;
+}
+.button-light{background:#21aabe;color:#061316;border-color:#21aabe}
+.button-light:hover{background:#62c7d4;border-color:#62c7d4}
+.button-ghost{border-color:rgba(240,255,238,.25);background:rgba(17,23,19,.62)}
+.button-ghost:hover{background:#17241f}
+.hero-floating{border:1px solid rgba(240,255,238,.2);background:rgba(17,23,19,.78);border-radius:18px;box-shadow:var(--shadow)}
+.floating-big{font-weight:800}
+.floating-row,.floating-top,.hero-bottom,.hero-note{font-family:inherit}
+.hero-bottom{border-color:rgba(240,255,238,.19)}
+.signal-strip{background:#0d120f;border-color:rgba(240,255,238,.13)}
+.signal-inner span{font-family:inherit;font-weight:750}
+/* Shared portfolio sections: surfaces, divisors, icons, line labels. */
+.container-wide{max-width:var(--max)}
+.section-pad{padding-top:125px;padding-bottom:132px}
+.section-kicker {color:var(--muted);font-weight:750;letter-spacing:.1em;font-size:12px}
+.section-kicker span:first-child{color:var(--accent);font-weight:900}
+.text-muted{color:var(--muted)}
+.concept{background:var(--bg)}
+.concept-heading p,.flex-heading p,.faq-intro>p{color:var(--muted)}
+.concept-heading p em{color:var(--text);font-style:normal;font-weight:750}
+.pain-grid{gap:16px;margin-top:22px}
+.pain-card,.pain-card+.pain-card{
+  min-height:340px;padding:28px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  transition:transform .3s,border-color .3s,background .3s;
+}
+
+.pain-index,.card-label{color:var(--muted);font-family:inherit;font-weight:750}
+.pain-icon{margin-top:38px}
+.pain-icon svg{stroke:var(--accent)}
+.pain-card h3{font-weight:850}
+.pain-card p{color:var(--muted)}
+.statement{background:var(--bg-soft);color:var(--text)}
+.statement:before{background:radial-gradient(ellipse at 82% 55%,rgba(33,170,190,.12),transparent 46%),radial-gradient(ellipse at 15% 100%,rgba(33,170,190,.07),transparent 50%)}
+.statement h2{font-weight:900}
+.statement h2 em{color:var(--accent)}
+.statement-back{font-family:inherit;color:rgba(125,204,195,.035)}
+/* Portfolio project cards adapted to snowboard metrics. */
+.feature-layout{gap:14px}
+.feature-right{gap:14px}
+.feature-card{
+  background:var(--surface);border-color:var(--line);
+  border-radius:var(--radius);box-shadow:0 16px 46px rgba(0,0,0,.09);
+  transition:transform .28s,border-color .28s;
+}
+
+.feature-large{background:linear-gradient(145deg,var(--surface-2),var(--surface))}
+.feature-large-bottom h3,.feature-bottom h3{font-weight:850}
+.feature-large-bottom p,.feature-bottom p{color:var(--muted)}
+.schematic-orbit{border-color:var(--line)}
+.feature-number{color:var(--accent)}
+/* App stage remains dark, like a real product screen. */
+.product-section{background:radial-gradient(ellipse at 50% 65%,rgba(33,170,190,.12),transparent 55%),#0d120f;color:#f1f5ef;border-color:rgba(240,255,238,.12)}
+.product-section .text-muted{color:#93a79e}
+.product-section .section-kicker{color:#98a398}
+.product-heading p{color:#a2b2a9}
+.phone-aura{background:radial-gradient(ellipse,rgba(33,170,190,.13),transparent 69%)}
+/* Structural cards use the same 18px radius and subtle stroke. */
+.rider-section{background:#090c0a;color:#f1f5ef}
+.rider-content h2{font-weight:900}
+.rider-content h2 em{color:#62c7d4}
+.technology{background:var(--bg)}
+.steps{gap:16px;margin-top:14px}
+.step,.step+.step{
+  padding:28px;min-height:470px;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);
+  transition:transform .3s,border-color .3s;
+}
+
+.step-head{color:var(--muted);font-family:inherit;font-weight:750}
+.step h3{font-weight:850}
+.step p{color:var(--muted)}
+.tech-line b{border-radius:10px;color:var(--muted);border-color:var(--line)}
+.faq-section{background:var(--bg)}
+.faq-intro h2{font-weight:900}
+.faq-item summary{color:var(--text);font-weight:700}
+.faq-item p{color:var(--muted)}
+.faq-plus{color:var(--accent)}
+/* The closing panel is the matching cyan-on-deep-green counterpart to the hero. */
+.cta-section{background:#0d120f;color:#f1f5ef}
+.cta-orb{background:radial-gradient(circle,rgba(33,170,190,.22) 0%,rgba(33,170,190,.08) 46%,transparent 75%)}
+.cta-core h2{font-weight:900}
+.cta-core h2 em{color:#62c7d4}
+.cta-core p{color:#a7b6ae}
+.cta-link{background:#21aabe;color:#061316;border-radius:10px;font-weight:850}
+.cta-link:hover{background:#62c7d4}
+.cta-link span{color:#061316}
+.cta-bottom{border-color:rgba(240,255,238,.2)}
+.footer{background:var(--bg-soft)}
+.footer-inner>div:first-child p,.footer-column>span,.footer-column>a,.footer-legal{color:var(--muted)}
+.footer-column>a:hover{color:var(--accent)}
+.footer-made span{font-family:inherit;color:var(--muted)}
+.footer-brand .brand-text{font-size:32px}
+/* Light theme: system palette shared with the original portfolio.
+   Photographic hero, app screens, rider interlude and final CTA intentionally stay dark. */
+body[data-theme="light"] .site-header.is-scrolled{background:rgba(248,250,244,.96);border-color:var(--line);box-shadow:var(--shadow)}
+body[data-theme="light"] .site-header.is-scrolled .brand-text{color:var(--text)}
+body[data-theme="light"] .site-header.is-scrolled .site-nav a{color:var(--muted)}
+body[data-theme="light"] .site-header.is-scrolled .site-nav a:hover{color:var(--text)}
+body[data-theme="light"] .site-header.is-scrolled .header-project-tag{color:var(--muted)}
+body[data-theme="light"] .site-header.is-scrolled .theme-toggle{color:var(--text);background:var(--surface);border-color:var(--line)}
+body[data-theme="light"] .statement-back{color:rgba(18,23,19,.055)}
+body[data-theme="light"] .feature-large-bottom p,body[data-theme="light"] .feature-bottom p{color:var(--muted)}
+body[data-theme="light"] .footer-column>a{color:var(--text)}
+body[data-theme="light"] .footer-legal{border-color:var(--line)}
+body[data-theme="light"] .footer .brand-text{color:var(--text)}
+/* Responsive refinements for Alex-fgCV's rounded system. */
+@media(max-width:1180px){
+  .header-project-tag{display:none}
+  .site-nav{gap:18px}
+  .hero-title{font-size:clamp(60px,7.8vw,102px)}
+}
+@media(max-width:1000px){
+  .site-header{width:calc(100% - 28px)}
+  .hero-title{font-size:clamp(58px,9vw,96px)}
+  .steps{gap:14px}
+}
+@media(max-width:740px){
+  :root{--header-h:62px}
+  .site-header{top:8px;width:calc(100% - 20px);border-radius:15px;height:62px}
+  .site-header.is-scrolled{top:6px;border-radius:15px}
+  .header-inner{width:calc(100% - 20px);gap:8px}
+  .brand-mark{height:33px;width:33px;font-size:13px;border-radius:9px}
+  .brand-text{font-size:18px}
+  .header-actions{margin-left:auto;gap:6px}
+  .header-contact{min-height:38px;padding:0 10px;font-size:11px;gap:9px}
+  .theme-toggle{width:38px;height:38px}
+  .menu-toggle{width:38px;height:38px;border-radius:50%;flex:none}
+  .menu-toggle span{left:8px;width:20px}
+  .site-nav{top:73px;left:0;right:0;padding:15px 20px 24px;border:1px solid rgba(240,255,238,.16);border-radius:15px;background:rgba(9,12,10,.98);box-shadow:0 22px 50px #0006}
+  .site-nav a{font-size:15px}
+  .hero-content{padding-top:121px}
+  .hero-title{font-size:clamp(53px,11vw,81px);font-weight:900;line-height:.99;letter-spacing:-.077em}
+  .hero-rings{width:115vw;height:115vw;right:-66%;top:-14%}
+  .hero::after{background:linear-gradient(0deg,#090c0a 7%,rgba(9,12,10,.40) 55%,rgba(9,12,10,.39)),linear-gradient(90deg,rgba(9,12,10,.55),transparent 68%)}
+  .section-pad{padding-top:96px;padding-bottom:96px}
+  .section-kicker{font-size:10px}
+  .pain-grid{display:grid;grid-template-columns:1fr;gap:12px}
+  .pain-card,.pain-card+.pain-card{min-height:220px;padding:23px;display:grid;grid-template-columns:76px 1fr;column-gap:8px}
+  .pain-index{grid-column:1/-1}
+  .pain-icon{grid-column:1;grid-row:2/4;margin-top:18px}
+  .pain-card h3{grid-column:2;grid-row:2;margin-top:17px;font-size:24px}
+  .pain-card p{grid-column:2;grid-row:3;margin:6px 0 0;font-size:12px}
+  .feature-right .feature-card{border-radius:var(--radius)}
+  .steps{display:grid;grid-template-columns:1fr;gap:12px}
+  .step,.step+.step{min-height:390px;padding:24px;border:1px solid var(--line)}
+  .footer-brand .brand-text{font-size:28px}
+}
+@media(max-width:430px){
+  .header-contact{display:none}
+  .hero-title{font-size:clamp(49px,11vw,63px)}
+  .hero-meta{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){.status-dot{animation:none}}
+/* Final contrast fixes: section backgrounds and translucent nav over dark hero. */
+.features{background:var(--bg)}
+body[data-theme="light"] .site-header:not(.is-scrolled) .brand-text{color:#f1f5ef}
+body[data-theme="light"] .site-header:not(.is-scrolled) .site-nav a{color:#b7c5c3}
+body[data-theme="light"] .site-header:not(.is-scrolled) .site-nav a:hover{color:#f1f5ef}
+body[data-theme="light"] .site-header:not(.is-scrolled) .header-project-tag{color:#c1cbca}
+body[data-theme="light"] .site-header:not(.is-scrolled) .theme-toggle{color:#f1f5ef;background:rgba(17,23,19,.70);border-color:rgba(240,255,238,.20)}
