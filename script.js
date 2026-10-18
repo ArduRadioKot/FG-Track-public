@@ -167,4 +167,88 @@
     }
   }
 
+  // Progressive enhancement: keep the exploded view and every description without motion.
+  const assembly = document.querySelector('#deviceAssembly');
+  if (assembly) {
+    const coverPart = assembly.querySelector('.assembly-cover');
+    const sticky = assembly.querySelector('.assembly-sticky');
+    const items = [...assembly.querySelectorAll('.assembly-step')];
+    const buttons = [...assembly.querySelectorAll('[data-assembly-step]')];
+    const segments = [...assembly.querySelectorAll('.assembly-progress > span')];
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    const shortScreen = matchMedia('(max-height: 600px)');
+    const narrowScreen = matchMedia('(max-width: 740px)');
+    const clamp = value => Math.max(0, Math.min(1, value));
+    const ease = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
+    let enabled = false;
+    let frame = 0;
+    let current = -1;
+
+    function setStep(index) {
+      if (index === current) return;
+      current = index;
+      items.forEach((item, i) => {
+        item.classList.toggle('is-active', i === index);
+        if (i === index) buttons[i].setAttribute('aria-current', 'step');
+        else buttons[i].removeAttribute('aria-current');
+      });
+    }
+
+    function renderAssembly() {
+      frame = 0;
+      if (!enabled) return;
+      const top = parseFloat(getComputedStyle(sticky).top) || 0;
+      const distance = Math.max(1, assembly.offsetHeight - sticky.offsetHeight);
+      const progress = clamp((top - assembly.getBoundingClientRect().top) / distance);
+      const size = coverPart.offsetWidth;
+      const spread = size / 440;
+      const battery = ease(progress / .32);
+      const board = ease((progress - .32) / .32);
+      const cover = ease((progress - .64) / .32);
+      const gather = ease(progress / .96);
+      // All four layers share one projection. The base rises as the internals settle.
+      const baseY = (145 * (1 - gather) + 20 * gather) * spread;
+      assembly.style.setProperty('--base-y', `${baseY}px`);
+      assembly.style.setProperty('--battery-y', `${((65 * (1 - battery)) + (baseY / spread - 15) * battery) * spread}px`);
+      assembly.style.setProperty('--board-y', `${((-35 * (1 - board)) + (baseY / spread - 26) * board) * spread}px`);
+      assembly.style.setProperty('--cover-y', `${(-145 * (1 - cover) - 14 * cover) * spread}px`);
+      assembly.style.setProperty('--interior-opacity', String(1 - ease((progress - .87) / .08)));
+      assembly.style.setProperty('--base-opacity', String(1 - ease((progress - .91) / .07)));
+      assembly.style.setProperty('--shadow-scale', String(1 - progress * .22));
+      segments.forEach((segment, i) => segment.style.setProperty('--fill', String(clamp(progress * 3 - i))));
+      const step = Math.min(2, Math.floor(progress * 3));
+      setStep(step);
+    }
+
+    function scheduleAssembly() {
+      if (enabled && !frame) frame = requestAnimationFrame(renderAssembly);
+    }
+
+    function configureAssembly() {
+      enabled = !motion.matches && !shortScreen.matches;
+      assembly.classList.toggle('assembly-ready', enabled);
+      if (enabled) scheduleAssembly();
+      else {
+        assembly.removeAttribute('style');
+        segments.forEach(segment => segment.style.removeProperty('--fill'));
+        setStep(0);
+      }
+    }
+
+    buttons.forEach((button, index) => button.addEventListener('click', () => {
+      if (!enabled) { setStep(index); return; }
+      const top = parseFloat(getComputedStyle(sticky).top) || 0;
+      const distance = Math.max(1, assembly.offsetHeight - sticky.offsetHeight);
+      const target = window.scrollY + assembly.getBoundingClientRect().top - top + distance * [0, .48, .99][index];
+      window.scrollTo({ top: target, behavior: 'smooth' });
+    }));
+    window.addEventListener('scroll', scheduleAssembly, { passive: true });
+    window.addEventListener('resize', configureAssembly, { passive: true });
+    motion.addEventListener('change', configureAssembly);
+    shortScreen.addEventListener('change', configureAssembly);
+    narrowScreen.addEventListener('change', configureAssembly);
+    if ('ResizeObserver' in window) new ResizeObserver(scheduleAssembly).observe(sticky);
+    configureAssembly();
+  }
+
 })();

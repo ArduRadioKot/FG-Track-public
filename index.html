@@ -99,9 +99,47 @@
           <p>FG-Track устанавливается на доску и измеряет её ускорения и вращения. Данные передаются на смартфон по Bluetooth, чтобы вы могли изучить движение после тренировки.</p>
         </div>
         <figure class="device-visual reveal">
-          <div class="device-photo-wrap"><img src="assets/prototype-photo-original.jpeg" loading="lazy" width="1210" height="1613" alt="Текущий прототип датчика FG-Track на базе M5StickC Plus2"></div>
-<!--          <figcaption><span>ПРОТОТИП / В РАЗРАБОТКЕ</span><span>Фотография действующего устройства, не финальный корпус</span></figcaption>-->
+          <div class="device-photo-wrap tracker-photo-crop"><img src="assets/fg-track-tracker-v2.png" loading="lazy" width="1536" height="1024" alt="Трекер FG-Track на заснеженном сноуборде"></div>
         </figure>
+      </div>
+    </section>
+
+    <section class="section technology assembly-section" id="technology" aria-labelledby="techTitle">
+      <div class="container-wide assembly-heading">
+        <h2 id="techTitle">Сложное - внутри.<br><span class="text-muted">Простое - снаружи.</span></h2>
+        <p>Три звена одной системы. Никакого дополнительного оборудования на трассе.</p>
+      </div>
+      <div class="assembly-scroll" id="deviceAssembly">
+        <div class="assembly-sticky">
+          <div class="container-wide assembly-layout">
+            <figure class="assembly-figure" aria-label="Сборка трекера FG-Track: основание, аккумулятор, электронная плата и крышка корпуса">
+              <div class="assembly-stage" aria-hidden="true">
+                <div class="assembly-shadow"></div>
+                <div class="assembly-part assembly-base"></div>
+                <div class="assembly-part assembly-battery"></div>
+                <div class="assembly-part assembly-board"></div>
+                <div class="assembly-part assembly-cover"></div>
+              </div>
+            </figure>
+            <div class="assembly-copy">
+              <div class="assembly-progress" aria-hidden="true"><span></span><span></span><span></span></div>
+              <ol class="assembly-details">
+                <li class="assembly-step is-active">
+                  <button class="assembly-step-button" type="button" data-assembly-step="0" aria-current="step" aria-controls="assemblyDescription0"><span class="assembly-index">01</span><span class="assembly-step-title">Датчик на доске</span></button>
+                  <p id="assemblyDescription0">IMU фиксирует ускорения и вращения доски.</p>
+                </li>
+                <li class="assembly-step">
+                  <button class="assembly-step-button" type="button" data-assembly-step="1" aria-controls="assemblyDescription1"><span class="assembly-index">02</span><span class="assembly-step-title">Bluetooth Low Energy</span></button>
+                  <p id="assemblyDescription1">Телеметрия передаётся на смартфон по BLE. Интеграция GPS телефона для записи маршрута планируется.</p>
+                </li>
+                <li class="assembly-step">
+                  <button class="assembly-step-button" type="button" data-assembly-step="2" aria-controls="assemblyDescription2"><span class="assembly-index">03</span><span class="assembly-step-title">Аналитика на телефоне</span></button>
+                  <p id="assemblyDescription2">Приложение сохраняет сессии. Автоматическое определение прыжков и трюков ещё разрабатывается.</p>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -216,23 +254,6 @@
       </div>
     </section>
 
-    <section class="section section-pad technology" id="technology" aria-labelledby="techTitle">
-      <div class="container-wide"><div class="flex-heading section-heading reveal"><h2 id="techTitle">Сложное - внутри.<br><span class="text-muted">Простое - снаружи.</span></h2><p>Три звена одной системы. Никакого дополнительного оборудования на трассе.</p></div>
-        <div class="steps">
-          <div class="step reveal"><div class="sensor-drawing"><img class="sensor-prototype-photo" src="assets/tracker-from-presentation.webp" loading="lazy" alt="Крупный план экрана прототипа FG-Track на базе M5StickC Plus2"></div><h3>Датчик на доске</h3><p>IMU фиксирует ускорения и вращения доски. Текущий прототип построен на M5StickC Plus2.</p></div>
-          <div class="step reveal"><div class="ble-drawing" aria-hidden="true">
-              <span class="ble-wave wave-a"></span><span class="ble-wave wave-b"></span>
-              <span class="ble-icon-wrap">
-                <svg class="ble-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path d="M7 7L17 17L12 22V2L17 7L7 17" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </span>
-              <span class="ble-signal ble-signal-left"></span><span class="ble-signal ble-signal-right"></span>
-            </div><h3>Bluetooth Low Energy</h3><p>Телеметрия передаётся на смартфон по BLE. Интеграция GPS телефона для записи маршрута планируется.</p></div>
-          <div class="step reveal"><div class="insight-drawing" aria-hidden="true"><span>FS 360°</span><div class="insight-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><h3>Аналитика на телефоне</h3><p>Приложение сохраняет сессии. Автоматическое определение прыжков и трюков ещё разрабатывается.</p></div>
-        </div>
-      </div>
-    </section>
 
     <section class="faq-section section-pad" id="faq" aria-labelledby="faqTitle"><div class="container-wide faq-layout"><div class="faq-intro reveal"><h2 id="faqTitle">Есть<br>вопросы<span>?</span></h2><p>Коротко о том, как работает FG-Track.</p></div><div class="faq-items">
 <!--      <details class="faq-item reveal" name="fg-track-faq"><summary>Нужна ли камера на трассе?<span class="faq-plus" aria-hidden="true"><svg class="ui-icon" aria-hidden="true" focusable="false"><use href="#icon-plus"></use></svg></span></summary><p>Нет. Датчик устанавливается на сноуборд, считывает ускорения и вращения, а затем отправляет измерения в приложение по BLE.</p></details>-->
