@@ -5,20 +5,90 @@
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const root = document.documentElement;
 
-  // Theme: follows the system until the visitor picks one.
-  const darkQuery = matchMedia('(prefers-color-scheme: dark)');
-  const currentTheme = () => root.dataset.theme || (darkQuery.matches ? 'dark' : 'light');
-  const syncThemeColor = () => {
-    $('meta[name="theme-color"]').setAttribute('content', currentTheme() === 'dark' ? '#121e25' : '#eef3f5');
-    $('#themeToggle').setAttribute('aria-label', currentTheme() === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему');
+  // Theme: dark by default, the visitor's choice is remembered.
+  const currentTheme = () => root.dataset.theme === 'light' ? 'light' : 'dark';
+  const syncTheme = () => {
+    const light = currentTheme() === 'light';
+    $('meta[name="theme-color"]').setAttribute('content', light ? '#eef2e9' : '#090c0a');
+    $('#themeToggle').setAttribute('aria-label', light ? 'Включить тёмную тему' : 'Включить светлую тему');
   };
   $('#themeToggle').addEventListener('click', () => {
     root.dataset.theme = currentTheme() === 'dark' ? 'light' : 'dark';
     try { localStorage.setItem('fg-track-theme', root.dataset.theme); } catch (_) {}
-    syncThemeColor();
+    syncTheme();
   });
-  darkQuery.addEventListener('change', syncThemeColor);
-  syncThemeColor();
+  syncTheme();
+
+  // The floating header turns to glass once the page is scrolled.
+  const header = $('#siteHeader');
+  const onScroll = () => header.classList.toggle('is-scrolled', scrollY > 24);
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Mobile menu from the original header.
+  const menuToggle = $('#menuToggle');
+  const mobileMenu = $('#mobileMenu');
+  const compactHeader = matchMedia('(max-width: 1100px)');
+  function setMenu(open) {
+    open = open && compactHeader.matches;
+    menuToggle.setAttribute('aria-expanded', String(open));
+    menuToggle.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+    mobileMenu.classList.toggle('is-open', open);
+    mobileMenu.setAttribute('aria-hidden', String(!open));
+    mobileMenu.inert = !open;
+    document.body.classList.toggle('menu-open', open);
+  }
+  menuToggle.addEventListener('click', () => setMenu(menuToggle.getAttribute('aria-expanded') !== 'true'));
+  $$('a', mobileMenu).forEach(a => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') { setMenu(false); menuToggle.focus(); }
+  });
+  compactHeader.addEventListener('change', () => setMenu(false));
+
+  // Search across the page sections (Cmd/Ctrl+K or the search button).
+  const searchDialog = $('#headerSearchDialog');
+  const searchInput = $('#headerSearchInput');
+  const searchResults = $('#headerSearchResults');
+  const searchSections = $$('#siteNav a').map(link => ({
+    label: link.textContent.trim(),
+    href: link.getAttribute('href'),
+    content: $(link.getAttribute('href'))?.textContent || ''
+  }));
+  let searchReturnFocus = null;
+  function renderSearch() {
+    const query = searchInput.value.trim().toLocaleLowerCase('ru');
+    const matches = searchSections.filter(item => `${item.label} ${item.content}`.toLocaleLowerCase('ru').includes(query));
+    searchResults.replaceChildren();
+    matches.forEach(item => {
+      const link = document.createElement('a');
+      link.href = item.href;
+      link.textContent = item.label;
+      link.addEventListener('click', () => { searchReturnFocus = null; searchDialog.close(); });
+      searchResults.append(link);
+    });
+    if (!matches.length) {
+      const message = document.createElement('p');
+      message.textContent = 'Ничего не найдено. Попробуйте другой запрос.';
+      searchResults.append(message);
+    }
+  }
+  function openSearch() {
+    if (searchDialog.open) return;
+    searchReturnFocus = document.activeElement;
+    setMenu(false);
+    searchInput.value = '';
+    renderSearch();
+    searchDialog.showModal();
+    searchInput.focus();
+  }
+  $$('[data-header-search]').forEach(button => button.addEventListener('click', openSearch));
+  searchInput.addEventListener('input', renderSearch);
+  $('#headerSearchClose').addEventListener('click', () => searchDialog.close());
+  searchDialog.addEventListener('click', e => { if (e.target === searchDialog) searchDialog.close(); });
+  searchDialog.addEventListener('close', () => { if (searchReturnFocus) searchReturnFocus.focus(); });
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openSearch(); }
+  });
 
   // Keep FAQ exclusive where <details name> is not supported.
   const faq = $$('.faq-items details');
@@ -131,6 +201,7 @@
   }
   const transformFor = p => [`translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${p.tilt.toFixed(1)})`, `scale(${p.sx.toFixed(3)} 1)`];
 
+  const states = $$('#jumpStates li');
   const ghostEls = ghostAt.map(u => {
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     const inner = spin.cloneNode(true);
@@ -159,6 +230,8 @@
     out.height.textContent = fmt(h);
     scrub.value = Math.round(u * 1000);
     scrub.setAttribute('aria-valuetext', `${fmt(t)} с, поворот ${Math.round(p.yaw)}°`);
+    const state = u <= 0 ? 'ground' : u < .08 ? 'takeoff' : u < .92 ? 'airborne' : 'landing';
+    states.forEach(li => li.classList.toggle('is-on', li.dataset.state === state));
   }
 
   let frame = 0;
