@@ -114,7 +114,6 @@
   // Scroll-driven assembly. Without motion or on short screens every step stays readable.
   const assembly = $('#deviceAssembly');
   if (assembly) {
-    const coverPart = $('.assembly-cover', assembly);
     const sticky = $('.assembly-sticky', assembly);
     const items = $$('.assembly-step', assembly);
     const buttons = $$('[data-assembly-step]', assembly);
@@ -123,6 +122,52 @@
     const clamp = v => Math.max(0, Math.min(1, v));
     const ease = v => { const t = clamp(v); return t * t * (3 - 2 * t); };
     let enabled = false, raf = 0, current = -1;
+
+    // Frames of the real assembly (rendered from the STL model), played by scroll position.
+    const FRAMES = 49;
+    const stage = $('.assembly-stage', assembly);
+    const canvas = $('.assembly-canvas', assembly);
+    const ctx = canvas.getContext('2d');
+    const frames = [];
+    let wanted = 0, drawn = -1, started = false;
+    function fitCanvas() {
+      const ratio = Math.min(devicePixelRatio || 1, 2);
+      canvas.width = Math.round(stage.clientWidth * ratio);
+      canvas.height = Math.round(stage.clientHeight * ratio);
+      drawn = -1;
+      drawFrame(wanted);
+    }
+    function drawFrame(index) {
+      wanted = index;
+      // use the closest frame that has already loaded
+      let i = index;
+      while (i >= 0 && !(frames[i] && frames[i].complete && frames[i].naturalWidth)) i--;
+      if (i < 0) { i = index; while (i < FRAMES && !(frames[i] && frames[i].complete && frames[i].naturalWidth)) i++; }
+      const img = frames[i];
+      if (!img || i === drawn || i >= FRAMES) return;
+      drawn = i;
+      const k = Math.min(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
+      const w = img.naturalWidth * k, h = img.naturalHeight * k;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
+      stage.classList.add('is-ready');
+    }
+    function loadFrames() {
+      if (started) return;
+      started = true;
+      for (let i = 0; i < FRAMES; i++) {
+        const img = new Image();
+        img.decoding = 'async';
+        img.onload = () => { if (Math.abs(i - wanted) < 3 || i === 0) { drawn = -1; drawFrame(wanted); } };
+        img.src = `assets/assembly/f${String(i).padStart(2, '0')}.webp`;
+        frames.push(img);
+      }
+    }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries, o) => { if (entries.some(e => e.isIntersecting)) { loadFrames(); o.disconnect(); } }, { rootMargin: '900px 0px' }).observe(assembly);
+    } else loadFrames();
+    if ('ResizeObserver' in window) new ResizeObserver(fitCanvas).observe(stage);
+    fitCanvas();
 
     function setStep(index) {
       if (index === current) return;
@@ -139,17 +184,7 @@
       const top = parseFloat(getComputedStyle(sticky).top) || 0;
       const distance = Math.max(1, assembly.offsetHeight - sticky.offsetHeight);
       const progress = clamp((top - assembly.getBoundingClientRect().top) / distance);
-      const spread = coverPart.offsetWidth / 440;
-      const battery = ease(progress / .32), board = ease((progress - .32) / .32), cover = ease((progress - .64) / .32), gather = ease(progress / .96);
-      const baseY = (145 * (1 - gather) + 20 * gather) * spread;
-      const set = (k, v) => assembly.style.setProperty(k, v);
-      set('--base-y', `${baseY}px`);
-      set('--battery-y', `${((65 * (1 - battery)) + (baseY / spread - 15) * battery) * spread}px`);
-      set('--board-y', `${((-35 * (1 - board)) + (baseY / spread - 26) * board) * spread}px`);
-      set('--cover-y', `${(-145 * (1 - cover) - 14 * cover) * spread}px`);
-      set('--interior-opacity', String(1 - ease((progress - .87) / .08)));
-      set('--base-opacity', String(1 - ease((progress - .91) / .07)));
-      set('--shadow-scale', String(1 - progress * .22));
+      drawFrame(Math.round(progress * (FRAMES - 1)));
       segments.forEach((seg, i) => seg.style.setProperty('--fill', String(clamp(progress * 3 - i))));
       setStep(Math.min(2, Math.floor(progress * 3)));
     }
@@ -158,7 +193,7 @@
       enabled = !reduceMotion && !shortScreen.matches;
       assembly.classList.toggle('assembly-ready', enabled);
       if (enabled) schedule();
-      else { assembly.removeAttribute('style'); segments.forEach(seg => seg.style.removeProperty('--fill')); setStep(0); }
+      else { assembly.removeAttribute('style'); segments.forEach(seg => seg.style.removeProperty('--fill')); setStep(0); drawFrame(FRAMES - 1); }
     }
     buttons.forEach((button, index) => button.addEventListener('click', () => {
       if (!enabled) { setStep(index); return; }

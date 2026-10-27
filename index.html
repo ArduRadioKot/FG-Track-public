@@ -13,13 +13,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=63">
+  <link rel="stylesheet" href="site.css?v=76">
   <script>
     document.documentElement.classList.add('js');
     document.documentElement.dataset.theme = 'dark';
     try { if (localStorage.getItem('fg-track-theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch (_) {}
   </script>
-  <script src="script.js?v=63" defer></script>
+  <script src="script.js?v=76" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Перейти к содержимому</a>
@@ -71,72 +71,9 @@
         <p class="hero-lead">Компактный трекер для сноуборда, который фиксирует движение доски и помогает анализировать прыжки, вращения и результаты тренировок. Закрепи датчик на доске, подключи к смартфону и смотри, как ты катаешься.</p>
         <div class="hero-actions">
           <a class="button button-primary" href="#contact">Узнать о запуске <span aria-hidden="true">↘</span></a>
-          <a class="button button-secondary" href="#jump">Посмотреть прыжок</a>
+          <a class="button button-secondary" href="#how">Как это работает</a>
         </div>
       </div>
-    </section>
-
-    <section class="jump-section" aria-label="Пример прыжка">
-      <figure class="jump" id="jump">
-        <figcaption class="jump-title">
-          <strong><span>FS</span> 360</strong>
-          <span>Пример прыжка: время в воздухе, поворот доски и высота. Потяни ползунок.</span>
-        </figcaption>
-        <svg class="jump-scene" viewBox="100 100 1100 440" role="img" aria-labelledby="jumpDesc">
-          <desc id="jumpDesc">Схема прыжка: доска отрывается от трамплина, за 0,82 секунды разворачивается на 360 градусов и приземляется на склон.</desc>
-          <path class="snow" d="M0 430 H250 Q370 430 418 334 H438 L456 470 H700 Q738 470 770 372 H790 Q930 410 1200 532 V560 H0Z"/>
-          <path class="snow-edge" d="M0 430 H250 Q370 430 418 334 H438 M700 470 Q738 470 770 372 H790 Q930 410 1200 532"/>
-          <path class="arc" d="M428 322 Q663 -20 902 404"/>
-          <g id="ghosts" aria-hidden="true"></g>
-          <g class="apex" aria-hidden="true">
-            <line x1="663" y1="152" x2="663" y2="312"/>
-            <text x="676" y="246">0,82 м</text>
-          </g>
-          <g class="mark" aria-hidden="true">
-            <circle cx="428" cy="334" r="7"/>
-            <text x="404" y="318" text-anchor="end">Отрыв</text>
-          </g>
-          <g class="mark" aria-hidden="true">
-            <circle cx="902" cy="416" r="7"/>
-            <text x="884" y="462" text-anchor="end">Приземление</text>
-          </g>
-          <g id="board" class="board" aria-hidden="true" transform="translate(902 404) rotate(22)">
-            <g id="boardSpin">
-              <path class="board-deck" d="M-70 5 H70 Q82 5 86 -4 Q80 -1 70 -1 H-70 Q-80 -1 -86 -4 Q-82 5 -70 5Z"/>
-              <rect class="board-binding" x="-36" y="-12" width="18" height="11" rx="3"/>
-              <rect class="board-binding" x="18" y="-12" width="18" height="11" rx="3"/>
-              <rect class="board-sensor" x="-8" y="-7" width="16" height="6" rx="2"/>
-            </g>
-          </g>
-        </svg>
-
-        <div class="jump-controls">
-          <button class="replay" id="replay" type="button">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v5h5"/></svg>
-            Повторить прыжок
-          </button>
-          <div class="scrub">
-            <label class="visually-hidden" for="scrub">Момент прыжка</label>
-            <input id="scrub" type="range" min="0" max="1000" value="1000" aria-valuetext="0,82 с, поворот 360°">
-            <div class="scrub-phases" aria-hidden="true"><span>Отрыв</span><span>Полёт</span><span>Посадка</span></div>
-          </div>
-          <dl class="readout">
-            <div><dd><span id="rTime">0,82</span> с</dd><dt>время</dt></div>
-            <div><dd><span id="rYaw">360</span>°</dd><dt>поворот</dt></div>
-            <div><dd><span id="rHeight">0,00</span> м</dd><dt>высота</dt></div>
-          </dl>
-        </div>
-
-        <div class="jump-logic">
-          <p>Приложение находит прыжок по четырём состояниям. Первая версия работает без нейросети: конечный автомат и пороговые значения.</p>
-          <ol class="jump-states" id="jumpStates" aria-label="Состояния прыжка">
-            <li data-state="ground">GROUND</li>
-            <li data-state="takeoff">TAKEOFF</li>
-            <li data-state="airborne">AIRBORNE</li>
-            <li data-state="landing">LANDING</li>
-          </ol>
-        </div>
-      </figure>
     </section>
 
     <section class="assembly-section" id="how" aria-labelledby="howTitle">
@@ -149,13 +86,10 @@
       <div class="assembly-scroll" id="deviceAssembly">
         <div class="assembly-sticky">
           <div class="wrap assembly-layout">
-            <figure class="assembly-figure" aria-label="Сборка трекера FG-Track: основание, аккумулятор, электронная плата и крышка корпуса">
+            <figure class="assembly-figure" aria-label="Сборка FG-Track: аккумулятор, плата, корпус, кнопка, световод и винты собираются при прокрутке">
               <div class="assembly-stage" aria-hidden="true">
-                <div class="assembly-shadow"></div>
-                <div class="assembly-part assembly-base"></div>
-                <div class="assembly-part assembly-battery"></div>
-                <div class="assembly-part assembly-board"></div>
-                <div class="assembly-part assembly-cover"></div>
+                <img class="assembly-first" src="assets/assembly/f00.webp" width="514" height="676" alt="">
+                <canvas class="assembly-canvas"></canvas>
               </div>
             </figure>
             <div class="assembly-copy">
@@ -163,15 +97,15 @@
               <ol class="assembly-details">
                 <li class="assembly-step is-active">
                   <button class="assembly-step-button" type="button" data-assembly-step="0" aria-current="step" aria-controls="assemblyDescription0">Аккумулятор</button>
-                  <p id="assemblyDescription0">250 мА·ч. Заряжается по USB-C.</p>
+                  <p id="assemblyDescription0">Литий-полимерный, 250 мА·ч. Заряжается по USB-C, заряд виден в приложении.</p>
                 </li>
                 <li class="assembly-step">
                   <button class="assembly-step-button" type="button" data-assembly-step="1" aria-controls="assemblyDescription1">Плата с датчиком</button>
-                  <p id="assemblyDescription1">Процессор ARM Cortex-M4 и датчик движения. Измеряют ускорения и вращения доски и передают их на смартфон по Bluetooth Low Energy.</p>
+                  <p id="assemblyDescription1">Процессор ARM Cortex-M4 измеряет ускорения и вращения доски, фиксирует удар при приземлении и передаёт данные на смартфон по Bluetooth Low Energy.</p>
                 </li>
                 <li class="assembly-step">
                   <button class="assembly-step-button" type="button" data-assembly-step="2" aria-controls="assemblyDescription2">Корпус</button>
-                  <p id="assemblyDescription2">Закрывает электронику и крепится на доску. Способ крепления ещё уточняется.</p>
+                  <p id="assemblyDescription2">Тонкий корпус с одной кнопкой и световой индикацией закрывает электронику. Способ крепления на доску ещё уточняется.</p>
                 </li>
               </ol>
             </div>
@@ -187,17 +121,21 @@
         </div>
       </div>
       <div class="device-pair">
-        <figure class="device-render reveal">
-          <div class="tracker-crop"><img src="assets/tracker-closeup.png" width="618" height="392" loading="lazy" alt="Трекер FG-Track на заснеженном сноуборде"></div>
-        </figure>
-        <div class="specs reveal">
+        <div class="device-left reveal">
+          <figure class="device-render">
+            <img src="assets/cad-iso-top.jpg" width="1110" height="850" loading="lazy" alt="Корпус FG-Track: кнопка, световод и разъём USB-C">
+          </figure>
           <p class="spec-lead"><strong>100</strong> замеров движения в секунду</p>
           <p class="spec-text">Небольшой датчик устанавливается на доску и измеряет её ускорения и вращения. Данные передаются на смартфон по Bluetooth, чтобы ты мог изучить движение после тренировки.</p>
+        </div>
+        <div class="reveal">
           <dl class="spec-list">
             <div><dt>Процессор</dt><dd>ARM Cortex-M4</dd></div>
+            <div><dt>Измерения</dt><dd>Ускорения до ±32 g, вращение до ±2000 °/с, 100 замеров в секунду</dd></div>
             <div><dt>Аккумулятор</dt><dd>250 мА·ч</dd></div>
             <div><dt>Связь</dt><dd>Bluetooth Low Energy. Телефон ведущий, трекер ведомый</dd></div>
             <div><dt>Зарядка</dt><dd>USB-C</dd></div>
+            <div><dt>Корпус</dt><dd>22,4 × 48,2 × 9,5 мм, одна кнопка и световая индикация</dd></div>
             <div><dt>Приложение</dt><dd>iOS 16.4 и новее, Android. Маршрут по GPS телефона, сессии хранятся на телефоне</dd></div>
           </dl>
         </div>
