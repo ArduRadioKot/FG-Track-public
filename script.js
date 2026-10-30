@@ -96,6 +96,14 @@
     if (item.open) faq.forEach(other => { if (other !== item) other.open = false; });
   }));
 
+  // The hero photo drifts a little slower than the page.
+  const heroPhoto = $('.hero-photo');
+  if (heroPhoto && !reduceMotion) {
+    let pTick = 0;
+    const drift = () => { pTick = 0; const y = Math.min(scrollY, innerHeight * 1.2); heroPhoto.style.transform = `translate3d(0, ${(y * 0.16).toFixed(1)}px, 0)`; };
+    addEventListener('scroll', () => { if (!pTick) pTick = requestAnimationFrame(drift); }, { passive: true });
+  }
+
   // Section parts rise in once, staggered within each group.
   const reveals = $$('.reveal');
   if (reduceMotion || !('IntersectionObserver' in window)) {
@@ -129,27 +137,37 @@
     const canvas = $('.assembly-canvas', assembly);
     const ctx = canvas.getContext('2d');
     const frames = [];
-    let wanted = 0, drawn = -1, started = false;
+    let wanted = 0, drawn = '', started = false;
     function fitCanvas() {
       const ratio = Math.min(devicePixelRatio || 1, 2);
       canvas.width = Math.round(stage.clientWidth * ratio);
       canvas.height = Math.round(stage.clientHeight * ratio);
-      drawn = -1;
+      drawn = '';
       drawFrame(wanted);
     }
-    function drawFrame(index) {
-      wanted = index;
-      // use the closest frame that has already loaded
-      let i = index;
-      while (i >= 0 && !(frames[i] && frames[i].complete && frames[i].naturalWidth)) i--;
-      if (i < 0) { i = index; while (i < FRAMES && !(frames[i] && frames[i].complete && frames[i].naturalWidth)) i++; }
-      const img = frames[i];
-      if (!img || i === drawn || i >= FRAMES) return;
-      drawn = i;
+    const ready = i => frames[i] && frames[i].complete && frames[i].naturalWidth;
+    function nearest(i, dir) { while (i >= 0 && i < FRAMES && !ready(i)) i += dir; return i >= 0 && i < FRAMES ? i : -1; }
+    function paint(img, alpha) {
       const k = Math.min(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
       const w = img.naturalWidth * k, h = img.naturalHeight * k;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.globalAlpha = alpha;
       ctx.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
+    }
+    // pos is a fractional frame number: the two neighbouring frames are blended
+    function drawFrame(pos) {
+      wanted = pos;
+      pos = Math.max(0, Math.min(FRAMES - 1, pos));
+      const lo = nearest(Math.floor(pos), -1) >= 0 ? nearest(Math.floor(pos), -1) : nearest(Math.floor(pos), 1);
+      if (lo < 0) return;
+      const hi = ready(Math.min(FRAMES - 1, lo + 1)) ? Math.min(FRAMES - 1, lo + 1) : lo;
+      const t = hi === lo ? 0 : Math.max(0, Math.min(1, pos - lo));
+      const key = `${lo}:${hi}:${Math.round(t * 40)}`;
+      if (key === drawn) return;
+      drawn = key;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      paint(frames[lo], 1);
+      if (t > 0.01) paint(frames[hi], t);
+      ctx.globalAlpha = 1;
       stage.classList.add('is-ready');
     }
     function loadFrames() {
@@ -158,7 +176,7 @@
       for (let i = 0; i < FRAMES; i++) {
         const img = new Image();
         img.decoding = 'async';
-        img.onload = () => { if (Math.abs(i - wanted) < 3 || i === 0) { drawn = -1; drawFrame(wanted); } };
+        img.onload = () => { if (Math.abs(i - wanted) < 3 || i === 0) { drawn = ''; drawFrame(wanted); } };
         img.src = `assets/assembly/f${String(i).padStart(2, '0')}.webp`;
         frames.push(img);
       }
@@ -178,21 +196,29 @@
         else buttons[i].removeAttribute('aria-current');
       });
     }
+    let target = 0, shown = 0;
+    function readProgress() {
+      const top = parseFloat(getComputedStyle(sticky).top) || 0;
+      const distance = Math.max(1, assembly.offsetHeight - sticky.offsetHeight);
+      return clamp((top - assembly.getBoundingClientRect().top) / distance);
+    }
     function renderAssembly() {
       raf = 0;
       if (!enabled) return;
-      const top = parseFloat(getComputedStyle(sticky).top) || 0;
-      const distance = Math.max(1, assembly.offsetHeight - sticky.offsetHeight);
-      const progress = clamp((top - assembly.getBoundingClientRect().top) / distance);
-      drawFrame(Math.round(progress * (FRAMES - 1)));
-      segments.forEach((seg, i) => seg.style.setProperty('--fill', String(clamp(progress * 3 - i))));
-      setStep(Math.min(2, Math.floor(progress * 3)));
+      target = readProgress();
+      // critically damped follow: fast when far, soft when close
+      shown += (target - shown) * 0.14;
+      if (Math.abs(target - shown) < 0.0004) shown = target;
+      drawFrame(shown * (FRAMES - 1));
+      segments.forEach((seg, i) => seg.style.setProperty('--fill', String(clamp(shown * 3 - i))));
+      setStep(Math.min(2, Math.floor(target * 3)));
+      if (shown !== target) raf = requestAnimationFrame(renderAssembly);
     }
     const schedule = () => { if (enabled && !raf) raf = requestAnimationFrame(renderAssembly); };
     function configure() {
       enabled = !reduceMotion && !shortScreen.matches;
       assembly.classList.toggle('assembly-ready', enabled);
-      if (enabled) schedule();
+      if (enabled) { shown = target = readProgress(); schedule(); }
       else { assembly.removeAttribute('style'); segments.forEach(seg => seg.style.removeProperty('--fill')); setStep(0); drawFrame(FRAMES - 1); }
     }
     buttons.forEach((button, index) => button.addEventListener('click', () => {
